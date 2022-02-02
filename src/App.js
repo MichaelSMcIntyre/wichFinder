@@ -29,30 +29,49 @@ const App = () => {
   const [inputName, setInputName] = useState('');
   const [inputPrice, setInputPrice] = useState('');
   const [inputSandwiches, setInputSandwiches] = useState('');
+  const [inputFeatures, setInputFeatures] = useState('');
   const [inputAddress, setInputAddress] = useState('');
   const [inputPhone, setInputPhone] = useState('');
   const [inputPhoto, setInputPhoto] = useState('');
   const [inputWebsite, setInputWebsite] = useState('');
   const [inputReview, setInputReview] = useState('');
 
+  const getAll = () => {
+    return axios({
+      method: 'GET',
+      url: `/all`
+    })
+  }
+
   const add = (type, inputLat, inputLng, inputName,
                inputPrice, inputSandwiches, inputAddress,
-               inputPhone, inputPhoto, inputWebsite, inputReview
+               inputPhone, inputPhoto, inputWebsite, inputReview,
+               inputFeatures
     ) => {
     return axios({
       method: 'POST',
-      url: `/products/`,
+      url: `/add`,
       data: {
         type, inputLat, inputLng, inputName,
         inputPrice, inputSandwiches, inputAddress,
-        inputPhone, inputPhoto, inputWebsite, inputReview
+        inputPhone, inputPhoto, inputWebsite, inputReview,
+        inputFeatures
       }
     })
   }
 
   var addLocation = () => {
+    var sandArr = inputSandwiches.split(',');
+    var featArr = inputFeatures.split(',');
 
+    
 
+   return add(
+      type, Number(inputLat), Number(inputLng), inputName,
+      inputPrice, JSON.stringify(sandArr), inputAddress,
+      inputPhone, inputPhoto, inputWebsite, inputReview,
+      JSON.stringify(featArr)
+    )
   }
 
 
@@ -62,19 +81,21 @@ const App = () => {
     })
   }, [])
 
-  // useEffect(() => {
-  //   getPlacesData(miles, coordinates);
-        // .then((data) => {
-        //   setPlaces(data);
-        // })
-  // }, [coordinates]);
-
-
   useEffect(() => {
-    setIsLoading(true);
-    setPlaces(FakeDB);
-    setIsLoading(false);
+    //lat lng miles coods  for real call
+    getAll()
+        .then((data) => {
+          console.log("data from axios:::", data.data)
+          setPlaces(data.data);
+        })
   }, [coordinates]);
+
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   setPlaces(FakeDB);
+  //   setIsLoading(false);
+  // }, [coordinates]);
 
 
   return(
@@ -114,6 +135,8 @@ const App = () => {
             inputReview={inputReview}
             setInputReview={setInputReview}
             addLocation={addLocation}
+            inputFeatures={inputFeatures}
+            setInputFeatures={setInputFeatures}
           />
         </Grid>
         <Grid item xs={12} md={8}>

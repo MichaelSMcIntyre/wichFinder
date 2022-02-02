@@ -6,7 +6,7 @@ import useStyles from './styles.js';
 const AddShopForm = ({ type, setType, inputLat, setInputLat, inputLng, setInputLng, inputName, setInputName,
                 inputPrice, setInputPrice, inputSandwiches, setInputSandwiches, inputAddress, setInputAddress,
                 inputPhone, setInputPhone, inputPhoto, setInputPhoto, inputWebsite, setInputWebsite, inputReview, setInputReview,
-                addLocation
+                addLocation, inputFeatures, setInputFeatures
               }) => {
   const classes = useStyles();
 
@@ -50,6 +50,9 @@ const AddShopForm = ({ type, setType, inputLat, setInputLat, inputLng, setInputL
       </FormControl>
       <FormControl className={classes.formControl}>
         <TextField label="Favorite Sandwiches" variant="outlined" value={inputSandwiches} onChange={(e) => setInputSandwiches(e.target.value)} />
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <TextField label="Features" variant="outlined" value={inputFeatures} onChange={(e) => setInputFeatures(e.target.value)} />
       </FormControl>
       <FormControl className={classes.formControl}>
         <TextField label="Address" variant="outlined" value={inputAddress} onChange={(e) => setInputAddress(e.target.value)} />

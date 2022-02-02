@@ -40,60 +40,103 @@ module.exports = {
     }
   },
 
-
-
-  reviews: async function (page, count, sort, product_id, response) {
-    page = page === 0 ? 1 : page;
-    var offset = page * count;
-
-    console.log('offset::', offset.toString());
-    var order = '';
-    if (sort === 'newest') {
-      order = 'date';
-    } else if (sort === 'helpful') {
-      order = 'helpfulness';
-      console.log('yess::');
-    } else if (sort === 'relevant') {
-      order = 'helpfulness';
-    }
-
+  add: async function (type, inputLat, inputLng, inputName,
+                  inputPrice, inputSandwiches, inputAddress,
+                  inputPhone, inputPhoto, inputWebsite, inputReview, inputFeatures, response) {
     try {
-      const query = `SELECT
-      "allReviews".id,
-      rating,
-      summary,
-      recommend,
-      response,
-      body,
-      date,
-      reviewer_name,
-      helpfulness,
-      url
-      FROM "reviewList"."allReviews"
-      LEFT JOIN "reviewList"."reviews_photos" ON "allReviews".id = "reviews_photos".review_id
-      WHERE product_id = ${product_id}
-      ORDER BY ${order} DESC
-      OFFSET ${offset}
-      LIMIT ${count}
-      `;
-      const res = await connection.query(query);
-
-      var outArr = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        if (i > 0 && res.rows[i].id === outArr[outArr.length - 1].id) {
-          outArr[outArr.length - 1]['photos'].push(res.rows[i].url);
-        } else {
-          var url = res.rows[i].url;
-          var review = res.rows[i];
-          review['photos'] = [url];
-          delete review['url'];
-          outArr.push(review);
+      var sandwiches = '';
+      for(let i = 0; i < inputSandwiches.length; i++) {
+        if (inputSandwiches[i] === '"'){
+            sandwiches = sandwiches + `'`;
+        } else{
+            sandwiches = sandwiches + inputSandwiches[i];
         }
       }
-      response.send(outArr);
+      var features = '';
+      for(let i = 0; i < inputFeatures.length; i++) {
+        if (inputFeatures[i] === '"'){
+          features = features + `'`;
+        } else{
+          features = features + inputFeatures[i];
+        }
+      }
+      console.log('add location subbmited')
+      const res = await connection.query(
+        `INSERT INTO public.shops(
+          lat,
+          lng,
+          name,
+          price,
+          sandwiches,
+          features,
+          address,
+          phone,
+          website,
+          photo,
+          review,
+          type)
+        VALUES (
+          ${inputLat},
+          ${inputLng},
+          '${inputName}',
+          '${inputPrice}',
+          ARRAY ${sandwiches} ,
+          ARRAY ${features},
+          '${inputAddress}',
+          '${inputPhone}',
+          '${inputWebsite}',
+          '${inputPhoto}',
+          '${inputReview}',
+          '${type}')`);
+      console.log(res.rows);
+      response.send(res.rows);
     } catch (err) {
-      response.send(err);
+      console.log('type::', type, typeof type)
+      console.log('inputLat::', inputLat, typeof inputLat)
+      console.log('inputLng::', inputLng, typeof inputLng)
+      console.log('inputName::', inputName, typeof inputName)
+      console.log('inputPrice::', inputPrice, typeof inputPrice)
+      console.log('inputSandwiches::', inputSandwiches, typeof inputSandwiches)
+      console.log('inputAddress::', inputAddress, typeof inputAddress)
+      console.log('inputPhone::', inputPhone, typeof inputPhone)
+      console.log('inputPhoto::', inputPhoto, typeof inputPhoto)
+      console.log('inputWebsite::', inputWebsite, typeof inputWebsite)
+      console.log('inputReview::', inputReview, typeof inputReview)
+      console.log('inputFeatures::', inputFeatures, typeof inputFeatures)
+      console.log('db insert' ,
+        `INSERT INTO public.shops(
+          lat,
+          lng,
+          name,
+          price,
+          sandwiches,
+          features,
+          address,
+          phone,
+          website,
+          photo,
+          review,
+          type)
+        VALUES (
+          ${inputLat},
+          ${inputLng},
+          '${inputName}',
+          '${inputPrice}',
+          ARRAY ${inputSandwiches} ,
+          ARRAY ${inputFeatures},
+          '${inputAddress}',
+          '${inputPhone}',
+          '${inputWebsite}',
+          '${inputPhoto}',
+          '${inputReview}',
+          '${type}')`
+      )
+      //response.setStatusCode(404).send(err);
+      response.send(type, inputLat, inputLng, inputName,
+        inputPrice, inputSandwiches, inputAddress,
+        inputPhone, inputPhoto, inputWebsite, inputReview, inputFeatures);
       console.log(err.stack);
     }
-  }
+  },
+
 };
