@@ -5,7 +5,7 @@ import PlaceDetails from '../PlaceDetails/PlaceDetails.jsx';
 
 import useStyles from './styles.js';
 
-const List = ({ places, childClicked, isLoading, setMiles, miles }) => {
+const List = ({ places, childClicked, isLoading, setMiles, miles, deleteLocation }) => {
   const classes = useStyles();
 
 
@@ -40,6 +40,7 @@ const List = ({ places, childClicked, isLoading, setMiles, miles }) => {
                place={place}
                selected={Number(childClicked) === idx}
                refProp={elRefs[idx]}
+               deleteLocation={deleteLocation}
               />
           </Grid>
         ))}

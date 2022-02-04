@@ -5,12 +5,8 @@ import axios from 'axios';
 import Header from './components/Header/Header.jsx';
 import List from './components/List/List.jsx';
 import Map from './components/Map/Map.jsx';
-import PlaceDetails from './components/PlaceDetails/PlaceDetails.jsx';
 import AddShopForm from './components/AddShopForm/AddShopForm.jsx';
 
-import FakeDB from './FakeDB.js';
-
-//import { getPlacesData } from './servercall'
 
 const App = () => {
 
@@ -43,6 +39,28 @@ const App = () => {
     })
   }
 
+  const getPlacesNearby = (lat, lng, mi) => {
+    return axios({
+      method: 'GET',
+      url: `/getPlacesNearby`,
+      params: {
+        lat,
+        lng,
+        miles
+      }
+    })
+  }
+
+  const deleteShop = (id) => {
+    return axios({
+      method: 'DELETE',
+      url: `/deleteShop`,
+      data: {
+        id: id
+      }
+    })
+  }
+
   const add = (type, inputLat, inputLng, inputName,
                inputPrice, inputSandwiches, inputAddress,
                inputPhone, inputPhoto, inputWebsite, inputReview,
@@ -60,11 +78,13 @@ const App = () => {
     })
   }
 
+  var deleteLocation = (id) => {
+    return deleteShop(id);
+  }
+
   var addLocation = () => {
     var sandArr = inputSandwiches.split(',');
     var featArr = inputFeatures.split(',');
-
-    
 
    return add(
       type, Number(inputLat), Number(inputLng), inputName,
@@ -74,6 +94,14 @@ const App = () => {
     )
   }
 
+  var updateNearbyPlaces = () => {
+    console.log('params in front::', coordinates, miles);
+    return getPlacesNearby(coordinates.lat, coordinates.lng, miles)
+        .then((data) => {
+          console.log("data from axios:::", data.data)
+          setPlaces(data.data);
+        })
+  }
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
@@ -82,20 +110,9 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    //lat lng miles coods  for real call
-    getAll()
-        .then((data) => {
-          console.log("data from axios:::", data.data)
-          setPlaces(data.data);
-        })
+    console.log('useEf')
+    updateNearbyPlaces();
   }, [coordinates]);
-
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   setPlaces(FakeDB);
-  //   setIsLoading(false);
-  // }, [coordinates]);
 
 
   return(
@@ -110,6 +127,7 @@ const App = () => {
             isLoading={isLoading}
             miles={miles}
             setMiles={setMiles}
+            deleteLocation={deleteLocation}
           />
           <AddShopForm
             type={type}

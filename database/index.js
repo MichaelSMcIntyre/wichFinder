@@ -91,50 +91,42 @@ module.exports = {
       console.log(res.rows);
       response.send(res.rows);
     } catch (err) {
-      console.log('type::', type, typeof type)
-      console.log('inputLat::', inputLat, typeof inputLat)
-      console.log('inputLng::', inputLng, typeof inputLng)
-      console.log('inputName::', inputName, typeof inputName)
-      console.log('inputPrice::', inputPrice, typeof inputPrice)
-      console.log('inputSandwiches::', inputSandwiches, typeof inputSandwiches)
-      console.log('inputAddress::', inputAddress, typeof inputAddress)
-      console.log('inputPhone::', inputPhone, typeof inputPhone)
-      console.log('inputPhoto::', inputPhoto, typeof inputPhoto)
-      console.log('inputWebsite::', inputWebsite, typeof inputWebsite)
-      console.log('inputReview::', inputReview, typeof inputReview)
-      console.log('inputFeatures::', inputFeatures, typeof inputFeatures)
-      console.log('db insert' ,
-        `INSERT INTO public.shops(
-          lat,
-          lng,
-          name,
-          price,
-          sandwiches,
-          features,
-          address,
-          phone,
-          website,
-          photo,
-          review,
-          type)
-        VALUES (
-          ${inputLat},
-          ${inputLng},
-          '${inputName}',
-          '${inputPrice}',
-          ARRAY ${inputSandwiches} ,
-          ARRAY ${inputFeatures},
-          '${inputAddress}',
-          '${inputPhone}',
-          '${inputWebsite}',
-          '${inputPhoto}',
-          '${inputReview}',
-          '${type}')`
-      )
       //response.setStatusCode(404).send(err);
-      response.send(type, inputLat, inputLng, inputName,
-        inputPrice, inputSandwiches, inputAddress,
-        inputPhone, inputPhoto, inputWebsite, inputReview, inputFeatures);
+      console.log(err.stack);
+    }
+  },
+
+  deleteShop: async function (id, response) {
+    try {
+      const res = await connection.query(`DELETE FROM public.shops WHERE id = ${id}`);
+      console.log(res.rows);
+      response.send(res.rows);
+    } catch (err) {
+      response.setStatusCode(404).send(err);
+      console.log(err.stack);
+    }
+  },
+
+  getPlacesNearby: async function (lat, lng, miles, response) {
+    try {
+      const res = await connection.query(`
+
+      SELECT *, earth_distance(
+        ll_to_earth(${lat}, ${lng}),
+        ll_to_earth(lat, lng)
+      ) / 1609.334 as distance
+      FROM public.shops
+      WHERE earth_distance(
+        ll_to_earth(${lat}, ${lng}),
+        ll_to_earth(lat, lng)
+      ) / 1609.334 < ${miles}
+      order by distance;
+
+      `);
+      console.log(res.rows);
+      response.send(res.rows);
+    } catch (err) {
+      //response.setStatusCode(404).send(err);
       console.log(err.stack);
     }
   },
