@@ -2,14 +2,15 @@ import React from 'react';
 import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chip } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
-import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles.js';
 
-const PlaceDetails = ({ place, selected, refProp, deleteLocation }) => {
+const PlaceDetails = ({ place, selected, refProp, deleteLocation, isAdmin }) => {
   const classes = useStyles();
 
   if(selected) refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+
+  var distance = Math.round(place.distance * 10) / 10;
 
   return (
     <Card elevation={6}>
@@ -26,10 +27,13 @@ const PlaceDetails = ({ place, selected, refProp, deleteLocation }) => {
          <Typography gutterBottom variant="subtitle1">{place.price ? place.price : '$'}</Typography>
        </Box>
        <Box display="flex" justifyContent="space-between">
-         <Typography variant="subtitle1">Ranking</Typography>
-         <Typography gutterBottom variant="subtitle1">{place.ranking ? place.ranking : '#10 of 42 Sandwiches in Bethlehem, PA'}</Typography>
+         <Typography variant="subtitle1">Miles Away</Typography>
+         <Typography gutterBottom variant="subtitle1">{ distance ? distance : '0'}</Typography>
        </Box>
-
+       <Box display="flex" justifyContent="space-between">
+         <Typography variant="subtitle1">Type</Typography>
+         <Typography gutterBottom variant="subtitle1">{ place.type !== '' ? place.type  : 'Americana'}</Typography>
+       </Box>
        {place?.sandwiches?.map((sandwich) => (
          <Box my={1} display="flex" justifyContent="space-between" alignItems="cent">
            <img src={'https://cdn-icons-png.flaticon.com/512/1691/1691118.png'} alt={sandwich.name} height={30} width={30}/>
@@ -58,12 +62,16 @@ const PlaceDetails = ({ place, selected, refProp, deleteLocation }) => {
             Website
           </Button>
         </CardActions>
-
-        <CardActions >
+          {isAdmin ?  (
+           <CardActions >
           <Button size="small" color="primary" onClick={() => deleteLocation(place.id)}>
             DELETE this location
           </Button>
-        </CardActions>
+          </CardActions>
+          ) : (
+            <></>
+          )}
+
 
       </CardContent>
     </Card>

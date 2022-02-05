@@ -10,14 +10,22 @@ import AddShopForm from './components/AddShopForm/AddShopForm.jsx';
 
 const App = () => {
 
+  const [ adminKeyPress, setAdminKeyPress ] = useState(false)
+  const [ isAdmin, setIsAdmin ] = useState(false);
+  const [username, setUsername ] = useState('');
+  const [password, setPassword ] = useState('')
+
   const [ places, setPlaces ] = useState([]);
+
   const [ childClicked, setChildClicked ] = useState(null);
 
   const [coordinates, setCoordinates] = useState({});
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const [miles, setMiles] = useState(10);
+
+  const [shopType, setShopType] = useState('All');
+
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
 
   const [type, setType] = useState('');
   const [inputLat, setInputLat] = useState('');
@@ -32,12 +40,6 @@ const App = () => {
   const [inputWebsite, setInputWebsite] = useState('');
   const [inputReview, setInputReview] = useState('');
 
-  const getAll = () => {
-    return axios({
-      method: 'GET',
-      url: `/all`
-    })
-  }
 
   const getPlacesNearby = (lat, lng, mi) => {
     return axios({
@@ -78,6 +80,19 @@ const App = () => {
     })
   }
 
+  const adminLoginSend = (username, password) => {
+    console.log('admin submit get called')
+    return axios({
+      method: 'POST',
+      url: `/adminLoginSend`,
+      data: {
+        username,
+        password
+      }
+    })
+
+  }
+console.log('===> isAdmin', isAdmin)
   var deleteLocation = (id) => {
     return deleteShop(id);
   }
@@ -95,28 +110,53 @@ const App = () => {
   }
 
   var updateNearbyPlaces = () => {
-    console.log('params in front::', coordinates, miles);
     return getPlacesNearby(coordinates.lat, coordinates.lng, miles)
         .then((data) => {
-          console.log("data from axios:::", data.data)
           setPlaces(data.data);
         })
+  }
+
+  var submitLogin = (e) => {
+    e.preventDefault();
+    return adminLoginSend(username, password )
+    .then((data) => {
+      console.log('login return data::',data)
+      if(data.data.length === 1) {
+        setIsAdmin(true);
+      }
+    })
+  }
+
+  var adminKeyDown = (e) => {
+    if(e.key === '|') {
+      setAdminKeyPress(true);
+    }
   }
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setCoordinates({ lat: latitude, lng: longitude })
     })
-  }, [])
+  }, []);
 
   useEffect(() => {
-    console.log('useEf')
     updateNearbyPlaces();
-  }, [coordinates]);
+  }, [coordinates, miles]);
+
+  useEffect(() => {
+    console.log('shoptype seleted::', shopType);
+    if(shopType !== 'Americana') {
+      var filteredPlaces = places.filter((place) => place.type === shopType)
+    } else {
+      filteredPlaces = places;
+    }
+    setFilteredPlaces(filteredPlaces);
+    console.log('shoptype filtered places::', filteredPlaces);
+  }, [shopType]);
 
 
   return(
-    <>
+    <div tabIndex="1" onKeyPress={(e) => adminKeyDown(e)}>
       <CssBaseline />
       <Header setCoordinates={setCoordinates}/>
       <Grid container spacing={3} style={{ width: '100%' }}>
@@ -124,12 +164,15 @@ const App = () => {
           <List
             places={places}
             childClicked={childClicked}
-            isLoading={isLoading}
             miles={miles}
             setMiles={setMiles}
             deleteLocation={deleteLocation}
+            shopType={shopType}
+            setShopType={setShopType}
+            isAdmin={isAdmin}
           />
-          <AddShopForm
+          {isAdmin ? (
+           <AddShopForm
             type={type}
             setType={setType}
             inputLat={inputLat}
@@ -156,17 +199,27 @@ const App = () => {
             inputFeatures={inputFeatures}
             setInputFeatures={setInputFeatures}
           />
+          ) : (
+            <></>
+          )}
+
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}
             coordinates={coordinates}
-            places={places}
+            places={ filteredPlaces.length ? filteredPlaces : places}
             setChildClicked={setChildClicked}
+            setUsername={setUsername}
+            setPassword={setPassword}
+            submitLogin={submitLogin}
+            adminKeyPress={adminKeyPress}
+            isAdmin={isAdmin}
           />
         </Grid>
+
       </Grid>
-    </>
+    </div>
   )
 }
 

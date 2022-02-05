@@ -1,6 +1,6 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import { Paper, Typography, useMediaQuery } from '@material-ui/core';
+import { Paper, Typography, useMediaQuery, FormControl, TextField, Button } from '@material-ui/core';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab';
 
@@ -10,7 +10,7 @@ import Authorization from '../../config.js';
 
 import mapStyles from './mapStyles.js';
 
-const Map = ({ setCoordinates, coordinates, places, setChildClicked }) => {
+const Map = ({ setCoordinates, coordinates, places, setChildClicked, setUsername, setPassword, submitLogin, adminKeyPress, isAdmin }) => {
   const classes = useStyles();
   const isDesktop = useMediaQuery('(min-width:600px)');
 
@@ -54,10 +54,23 @@ const Map = ({ setCoordinates, coordinates, places, setChildClicked }) => {
                 </Paper>
               )
             }
+
           </div>
         ))}
 
       </GoogleMapReact>
+
+
+      {adminKeyPress && !isAdmin ? (
+        <form>
+          <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
+          <input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+          <input type="submit" value="Admin Login" onClick={(e) => submitLogin(e)}/>
+        </form>
+
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

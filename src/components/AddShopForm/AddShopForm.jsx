@@ -26,7 +26,7 @@ const AddShopForm = ({ type, setType, inputLat, setInputLat, inputLng, setInputL
       <FormControl className={classes.formControl}>
         <InputLabel>Type</InputLabel>
         <Select variant="outlined" value={type} onChange={(e) => setType(e.target.value)}>
-          <MenuItem value={''}>none</MenuItem>
+          <MenuItem value={'Americana'}>Americana</MenuItem>
           <MenuItem value={'Bodega'}>Bodega</MenuItem>
           <MenuItem value={'Deli'}>Deli</MenuItem>
           <MenuItem value={'Bar'}>Bar</MenuItem>

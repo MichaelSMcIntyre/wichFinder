@@ -24,7 +24,7 @@ module.exports = {
       console.log(res.rows);
       response.send(res.rows);
     } catch (err) {
-      response.setStatusCode(404).send(err);
+      //response.setStatusCode(404).send(err);
       console.log(err.stack);
     }
   },
@@ -35,7 +35,7 @@ module.exports = {
       console.log(res.rows);
       response.send(res.rows);
     } catch (err) {
-      response.setStatusCode(404).send(err);
+      //response.setStatusCode(404).send(err);
       console.log(err.stack);
     }
   },
@@ -102,7 +102,7 @@ module.exports = {
       console.log(res.rows);
       response.send(res.rows);
     } catch (err) {
-      response.setStatusCode(404).send(err);
+      //response.setStatusCode(404).send(err);
       console.log(err.stack);
     }
   },
@@ -127,6 +127,26 @@ module.exports = {
       response.send(res.rows);
     } catch (err) {
       //response.setStatusCode(404).send(err);
+      console.log(err.stack);
+    }
+  },
+
+  adminLoginSend: async function (username, password, response) {
+    try {
+      console.log("db call good::", username, password)
+      const res = await connection.query(`
+
+      SELECT * FROM public.login
+      WHERE id = 1
+      AND username = '${username}'
+      AND password = '${password}'
+
+      `);
+      console.log(res.rows);
+      response.send(res.rows);
+    } catch (err) {
+      //response.setStatusCode(404).send(err);
+      console.log("db call::", username, password)
       console.log(err.stack);
     }
   },
