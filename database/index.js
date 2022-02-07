@@ -1,9 +1,9 @@
 const { Pool } = require('pg');
 const connection = new Pool({
   user: 'postgres',
-  host: 'localhost',
-  database: 'wichFinderShops',
-  password: 'root',
+  host: 'ec2-3-141-8-169.us-east-2.compute.amazonaws.com',
+  database: 'wichFinderDB',
+  password: 'yy10metroid',
   port: 5432
 });
 
@@ -60,6 +60,15 @@ module.exports = {
           features = features + inputFeatures[i];
         }
       }
+
+      var outReview = '';
+      for(let i = 0; i < inputReview.length; i++) {
+        if (inputReview[i] === "'") {
+          outReview = outReview + "'";
+        }
+        outReview = outReview + inputReview[i];
+      }
+
       console.log('add location subbmited')
       const res = await connection.query(
         `INSERT INTO public.shops(
@@ -86,7 +95,7 @@ module.exports = {
           '${inputPhone}',
           '${inputWebsite}',
           '${inputPhoto}',
-          '${inputReview}',
+          '${outReview}',
           '${type}')`);
       console.log(res.rows);
       response.send(res.rows);
@@ -133,7 +142,7 @@ module.exports = {
 
   adminLoginSend: async function (username, password, response) {
     try {
-      console.log("db call good::", username, password)
+
       const res = await connection.query(`
 
       SELECT * FROM public.login

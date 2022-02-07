@@ -81,7 +81,6 @@ const App = () => {
   }
 
   const adminLoginSend = (username, password) => {
-    console.log('admin submit get called')
     return axios({
       method: 'POST',
       url: `/adminLoginSend`,
@@ -92,7 +91,7 @@ const App = () => {
     })
 
   }
-console.log('===> isAdmin', isAdmin)
+
   var deleteLocation = (id) => {
     return deleteShop(id);
   }
@@ -120,7 +119,6 @@ console.log('===> isAdmin', isAdmin)
     e.preventDefault();
     return adminLoginSend(username, password )
     .then((data) => {
-      console.log('login return data::',data)
       if(data.data.length === 1) {
         setIsAdmin(true);
       }
@@ -144,14 +142,12 @@ console.log('===> isAdmin', isAdmin)
   }, [coordinates, miles]);
 
   useEffect(() => {
-    console.log('shoptype seleted::', shopType);
     if(shopType !== 'Americana') {
       var filteredPlaces = places.filter((place) => place.type === shopType)
     } else {
       filteredPlaces = places;
     }
     setFilteredPlaces(filteredPlaces);
-    console.log('shoptype filtered places::', filteredPlaces);
   }, [shopType]);
 
 
