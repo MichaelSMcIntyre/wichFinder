@@ -52,7 +52,7 @@ const List = ({ places, childClicked, isLoading, setMiles, miles, deleteLocation
       </FormControl>
 
       <Grid container spacing={3} className={classes.list}>
-        {places?.map((place, idx) => (
+        {places.map((place, idx) => (
           <Grid item key={idx} xs={12}>
              <PlaceDetails
                place={place}

@@ -28,7 +28,7 @@ const Map = ({ setCoordinates, coordinates, places, setChildClicked, setUsername
         }}
          onChildClick={(child) => setChildClicked(child)}
       >
-        {places?.map((place, idx) => (
+        {places.map((place, idx) => (
           <div
             className={classes.markerContainer}
             lat={place.lat}

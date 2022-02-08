@@ -44,14 +44,14 @@ const PlaceDetails = ({ place, selected, refProp, deleteLocation, isAdmin }) => 
         <Chip key={feature} size="small" label={feature} className={classes.chip} />
        ))}
 
-        {place?.address && (
+        {place.address && (
           <Typography gutterBottom variant="body2" color="textSecondary" className={classes.subtitle}>
             <LocationOnIcon /> {place.address}
           </Typography>
         )}
 
 
-        {place?.phone && (
+        {place.phone && (
         <Typography gutterBottom variant="body2" color="textSecondary" className={classes.spacing}>
           <PhoneIcon /> {place.phone}
         </Typography>
