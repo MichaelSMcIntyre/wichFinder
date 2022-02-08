@@ -29,6 +29,7 @@ app.delete('/deleteShop', (req, res) => {
 
 app.get('/getPlacesNearby', (req, res) => {
   const { lat, lng, miles } = req.query;
+  console.log('places in::', lat, lng, miles)
   dbCall.getPlacesNearby(lat, lng, miles, res);
 });
 
