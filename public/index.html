@@ -1,9 +1,24 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCzbtdq8p5n3oBkRdtBbzfY0Fdex2pmOEA"></script>
+
+    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCzbtdq8p5n3oBkRdtBbzfY0Fdex2pmOEA'>
+    </script>
   </head>
   <body>
+    <script>
+      var url = "main.js";
+      console.log("gmapkey above $::",gMapKey);
+      $.getScript(url, function(){
+
+          $(document).ready(function(){
+              console.log("gmapkey::",gMapKey); // Prints: Hi there!
+
+          });
+      });
+      </script>
 
     <div id="root"></div>
 

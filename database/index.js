@@ -1,9 +1,10 @@
+const Authorization =  require('./config.js');
 const { Pool } = require('pg');
 const connection = new Pool({
   user: 'postgres',
   host: 'ec2-3-141-8-169.us-east-2.compute.amazonaws.com',
   database: 'wichFinderDB',
-  password: 'yy10metroid',
+  password: Authorization,
   port: 5432
 });
 
