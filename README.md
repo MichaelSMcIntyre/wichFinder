@@ -1,6 +1,6 @@
 # wichFinder
 
-wichFinder is a client-facing 
+wichFinder is a client-facing sandwich resturant location web-portal. Designed for mobile and desktop borwser use solving the problem of over abundence of choises when looking for the best sandwich resturants in any given location. Utilizing a postGres database to make goe based queries off the users location and preferances. Having a hidden database managment freatures making it convient for administation to add/remove and update the database while maintaing a high level of secuirty for non-admin users. 
 
 <p align="center">
   <img alt="app demo" src="./demo.gif">
@@ -16,6 +16,7 @@ In the project directory, you can run:
   ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white) 
   ![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)
  ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+  ![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
  ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
  ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
  ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
