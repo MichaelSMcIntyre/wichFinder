@@ -1,14 +1,22 @@
 # wichFinder
 
-wichFinder is a client-facing sandwich resturant location web-portal. Designed for mobile and desktop borwser use solving the problem of over abundence of choises when looking for the best sandwich resturants in any given location. Utilizing a postGres database to make goe based queries off the users location and preferances. Having a hidden database managment freatures making it convient for administation to add/remove and update the database while maintaing a high level of secuirty for non-admin users. 
+wichFinder is a client-facing sandwich restaurant location web-portal. Designed for mobile and desktop browser use solving the problem of over abundance of choices when looking for the best sandwich restaurants in any given location. Utilizing a postGres database to make goe based queries off the users location and preferences. Having hidden database management features makes it convenient for administration to add/remove and update the database while maintaining a high level of security for non-admin users.  
 
 <p align="center">
   <img alt="app demo" src="./demo.gif">
 </p>
 
-## Available Scripts
+## Header
 
-In the project directory, you can run:
+Implemented Autocomplete from react-google-maps API to update coordinates for the geo queries and map UI centerpoint. 
+
+## List
+
+Designed to show restaurant information based on database results. Using a vertical card display similar to many other popular map based web apps.
+
+## Map
+
+Featuring a custom styled map to match website colors. Shows locations of restaurants in a card format.
 
 ### Technologies used:
 
